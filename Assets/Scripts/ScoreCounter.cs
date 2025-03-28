@@ -5,22 +5,32 @@ using UnityEngine;
 
 public class ScoreCounter : MonoBehaviour
 {
-	[SerializeField] TMP_Text text;
-	public static int Score { get; private set; }
+    [SerializeField] private TMP_Text text;
+    public static int Score { get; private set; }
 
-	void OnEnable()
-	{
-		Target.OnTargetHit += OnTargetHit;
-	}
+    private void OnEnable()
+    {
+        Target.OnTargetHit += HandleTargetHit;
+    }
 
-	void OnDisable()
-	{
-		Target.OnTargetHit -= OnTargetHit;
-	}
+    private void OnDisable()
+    {
+        Target.OnTargetHit -= HandleTargetHit;
+    }
 
-	void OnTargetHit()
-	{
-		Score++;
-		text.text = $"Score: {Score}";
-	}
+    private void HandleTargetHit()
+    {
+        IncreaseScore();
+        UpdateScoreText();
+    }
+
+    private void IncreaseScore()
+    {
+        Score++;
+    }
+
+    private void UpdateScoreText()
+    {
+        text.text = $"Score: {Score}";
+    }
 }

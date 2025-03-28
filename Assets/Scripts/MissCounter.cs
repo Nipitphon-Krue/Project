@@ -5,22 +5,32 @@ using UnityEngine;
 
 public class MissCounter : MonoBehaviour
 {
-	[SerializeField] TMP_Text text;
-	public static int Misses { get; private set; }
+    [SerializeField] private TMP_Text text;
+    public static int Misses { get; private set; }
 
-	void OnEnable()
-	{
-		TargetShooter.OnTargetMissed += OnTargetMissed;
-	}
+    private void OnEnable()
+    {
+        TargetShooter.OnTargetMissed += HandleTargetMissed;
+    }
 
-	void OnDisable()
-	{
-		TargetShooter.OnTargetMissed -= OnTargetMissed;
-	}
+    private void OnDisable()
+    {
+        TargetShooter.OnTargetMissed -= HandleTargetMissed;
+    }
 
-	void OnTargetMissed()
-	{
-		Misses++;
-		text.text = $"Misses: {Misses}";
-	}
+    private void HandleTargetMissed()
+    {
+        IncrementMissCount();
+        UpdateMissText();
+    }
+
+    private void IncrementMissCount()
+    {
+        Misses++;
+    }
+
+    private void UpdateMissText()
+    {
+        text.text = $"Misses: {Misses}";
+    }
 }

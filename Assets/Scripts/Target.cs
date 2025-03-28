@@ -5,21 +5,26 @@ using UnityEngine;
 
 public class Target : MonoBehaviour
 {
-	public static Action OnTargetHit;
+    public static Action OnTargetHit;
 
-	void Start()
-	{
-		RandomizePosition();
-	}
+    private void Start()
+    {
+        RandomizePosition();
+    }
 
-	public void Hit()
-	{
-		RandomizePosition();
-		OnTargetHit?.Invoke();
-	}
+    public void Hit()
+    {
+        RandomizePosition();
+        NotifyTargetHit();
+    }
 
-	void RandomizePosition()
-	{
-		transform.position = TargetBounds.Instance.GetRandomPosition();
-	}
+    private void RandomizePosition()
+    {
+        transform.position = TargetBounds.Instance.GetRandomPosition();
+    }
+
+    private void NotifyTargetHit()
+    {
+        OnTargetHit?.Invoke();
+    }
 }

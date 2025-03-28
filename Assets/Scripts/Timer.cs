@@ -6,36 +6,55 @@ using UnityEngine;
 
 public class Timer : MonoBehaviour
 {
-	public static Action OnGameEnded;
-	public static bool GameEnded { get; private set; }
+    public static Action OnGameEnded;
+    public static bool GameEnded { get; private set; }
 
-	[SerializeField] TMP_Text timerText;
+    [SerializeField] private TMP_Text timerText;
 
-	float endTime;
+    private float endTime;
 
-	const float gameTime = 10f;
+    private const float gameTime = 10f;
 
-	void Start()
-	{
-		GameEnded = false;
-		endTime = Time.time + gameTime;
-	}
+    private void Start()
+    {
+        InitializeTimer();
+    }
 
-	void Update()
-	{
-		if(GameEnded)
-			return;
+    private void Update()
+    {
+        if (GameEnded)
+            return;
 
-		float timeLeft = endTime - Time.time;
+        UpdateTimer();
+    }
 
-		if(timeLeft <= 0)
-		{
-			GameEnded = true;
-			OnGameEnded?.Invoke();
+    private void InitializeTimer()
+    {
+        GameEnded = false;
+        endTime = Time.time + gameTime;
+    }
 
-			timeLeft = 0;
-		}
+    private void UpdateTimer()
+    {
+        float timeLeft = endTime - Time.time;
 
-		timerText.text = $"Time Left: {timeLeft.ToString("0.0")}";
-	}
+        if (timeLeft <= 0)
+        {
+            EndGame();
+            timeLeft = 0;
+        }
+
+        DisplayTimeLeft(timeLeft);
+    }
+
+    private void EndGame()
+    {
+        GameEnded = true;
+        OnGameEnded?.Invoke();
+    }
+
+    private void DisplayTimeLeft(float timeLeft)
+    {
+        timerText.text = $"Time Left: {timeLeft.ToString("0.0")}";
+    }
 }
